@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Proyecto RNA-Seq</title>
-  <meta name="description" content="Proyecto RNA-Seq" />
+  <title>5 Normalización | Proyecto RNA-Seq</title>
+  <meta name="description" content="5 Normalización | Proyecto RNA-Seq" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Proyecto RNA-Seq" />
+  <meta property="og:title" content="5 Normalización | Proyecto RNA-Seq" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Proyecto RNA-Seq" />
+  <meta name="twitter:title" content="5 Normalización | Proyecto RNA-Seq" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="libs.html"/>
+<link rel="prev" href="transformacion.html"/>
+<link rel="next" href="visualizacion.html"/>
 <script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -178,30 +178,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Proyecto RNA-Seq</h1>
-<p class="author"><em>Paulina Rosales Becerra</em></p>
-<p class="date"><em>2021-02-28</em></p>
-</div>
-<div id="generealidades" class="section level1 unnumbered">
-<h1>Generealidades</h1>
-<p>Este proyecto busca retomar las herramientas y conocimientos recuperados en el <a href="https://github.com/lcolladotor/rnaseq_LCG-UNAM_2021">curso de RNA-seq 2021</a> impartido por <a href="http://lcolladotor.github.io/">Leonardo Collado-Torres</a> para los estudiantes de la <a href="https://lcg.unam.mx/">Licenciatura en Ciencias Genómicas</a>.</p>
-<div id="proyecto-datos-de-srp11148" class="section level2 unnumbered">
-<h2>Proyecto: Datos de SRP11148</h2>
-<p>El proyecto que elegí fue: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6205557/"><em>“Transcriptomic and genomic profiling of early-stage ovarian carcinomas associated with histotype and overall survival [RNA-Seq]”</em></a> (ID: SRP11148), la elección fue basada únicamente en interés por el tema y número de muestras (n=96).</p>
-<div id="abstract" class="section level3 unnumbered">
-<h3><em>Abstract</em></h3>
-<p><em>“Ovarian cancer is the most lethal gynecological malignancy in the western world. Despite recent efforts to characterize ovarian cancer using molecular profiling, few targeted treatment options are currently available. Here, we examined genetic variants, fusion transcripts, SNP genotyping, and gene expression patterns for early-stage (I, II) ovarian carcinomas (n=96) in relation to clinicopathological characteristics and clinical outcome, thereby identifying novel genetic features of ovarian carcinomas. Furthermore, mutation frequencies of specific genetic variants and/or their gene expression patterns were associated with histotype and overall survival, e.g. SLC28A2 (mucinous ovarian carcinoma histotype), ARCN1 (low expression in 0-2 year survival group), and tumor suppressor MTUS1 (mutation status and overall survival). The long non-coding RNA MALAT1 was identified as a highly promiscuous fusion transcript in ovarian carcinoma. Moreover, gene expression deregulation for 23 genes was associated with tumor aggressiveness. Taken together, the novel biomarkers identified here may improve ovarian carcinoma subclassification and patient stratification according to histotype and overall survival. Overall design: Whole-transcriptome RNA sequencing (RNA-seq) was performed for 96 early-stage primary invasive ovarian carcinomas.”</em></p>
-</div>
-</div>
+<div id="normalizacion" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Normalización</h1>
+<p>La normalización se llevó a cabo desde el <a href="transformacion.html#expr_filt">filtrado por niveles de expresión</a>. En este apartado mostraré un ejemplo de los efectos de dicha normalización utilizando únicamnete las primeras 10 muestras del objeto <code>dge</code>.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="normalizacion.html#cb41-1" aria-hidden="true" tabindex="-1"></a>dge_unnorm <span class="ot">&lt;-</span> dge[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span>
+<span id="cb41-2"><a href="normalizacion.html#cb41-2" aria-hidden="true" tabindex="-1"></a>dge_unnorm<span class="sc">$</span>samples<span class="sc">$</span>norm.factors <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb41-3"><a href="normalizacion.html#cb41-3" aria-hidden="true" tabindex="-1"></a>dge_unnorm<span class="sc">$</span>counts[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(dge_unnorm<span class="sc">$</span>counts[,<span class="dv">1</span>]<span class="sc">*</span><span class="fl">0.05</span>)</span>
+<span id="cb41-4"><a href="normalizacion.html#cb41-4" aria-hidden="true" tabindex="-1"></a>dge_unnorm<span class="sc">$</span>counts[,<span class="dv">2</span>] <span class="ot">&lt;-</span> dge_unnorm<span class="sc">$</span>counts[,<span class="dv">2</span>]<span class="sc">*</span><span class="dv">5</span></span>
+<span id="cb41-5"><a href="normalizacion.html#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="normalizacion.html#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb41-7"><a href="normalizacion.html#cb41-7" aria-hidden="true" tabindex="-1"></a>lcpm <span class="ot">&lt;-</span> <span class="fu">cpm</span>(dge_unnorm, <span class="at">log=</span><span class="cn">TRUE</span>)</span>
+<span id="cb41-8"><a href="normalizacion.html#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(lcpm, <span class="at">las=</span><span class="dv">2</span>, <span class="at">col=</span>col, <span class="at">main=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb41-9"><a href="normalizacion.html#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main=</span><span class="st">&quot;A. Unnormalized data&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;Log-cpm&quot;</span>)</span>
+<span id="cb41-10"><a href="normalizacion.html#cb41-10" aria-hidden="true" tabindex="-1"></a>dge_norm <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(dge_unnorm)  </span>
+<span id="cb41-11"><a href="normalizacion.html#cb41-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-12"><a href="normalizacion.html#cb41-12" aria-hidden="true" tabindex="-1"></a>lcpm <span class="ot">&lt;-</span> <span class="fu">cpm</span>(dge_norm, <span class="at">log=</span><span class="cn">TRUE</span>)</span>
+<span id="cb41-13"><a href="normalizacion.html#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(lcpm, <span class="at">las=</span><span class="dv">2</span>, <span class="at">col=</span>col, <span class="at">main=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb41-14"><a href="normalizacion.html#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main=</span><span class="st">&quot;B. Normalized data&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;Log-cpm&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/visual_norm-1.png" width="672" /></p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="libs.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="transformacion.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="visualizacion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

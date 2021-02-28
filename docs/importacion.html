@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Proyecto RNA-Seq</title>
-  <meta name="description" content="Proyecto RNA-Seq" />
+  <title>2 Importación de datos | Proyecto RNA-Seq</title>
+  <meta name="description" content="2 Importación de datos | Proyecto RNA-Seq" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Proyecto RNA-Seq" />
+  <meta property="og:title" content="2 Importación de datos | Proyecto RNA-Seq" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Proyecto RNA-Seq" />
+  <meta name="twitter:title" content="2 Importación de datos | Proyecto RNA-Seq" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="libs.html"/>
+<link rel="prev" href="libs.html"/>
+<link rel="next" href="limpieza.html"/>
 <script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -178,30 +178,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Proyecto RNA-Seq</h1>
-<p class="author"><em>Paulina Rosales Becerra</em></p>
-<p class="date"><em>2021-02-28</em></p>
-</div>
-<div id="generealidades" class="section level1 unnumbered">
-<h1>Generealidades</h1>
-<p>Este proyecto busca retomar las herramientas y conocimientos recuperados en el <a href="https://github.com/lcolladotor/rnaseq_LCG-UNAM_2021">curso de RNA-seq 2021</a> impartido por <a href="http://lcolladotor.github.io/">Leonardo Collado-Torres</a> para los estudiantes de la <a href="https://lcg.unam.mx/">Licenciatura en Ciencias Genómicas</a>.</p>
-<div id="proyecto-datos-de-srp11148" class="section level2 unnumbered">
-<h2>Proyecto: Datos de SRP11148</h2>
-<p>El proyecto que elegí fue: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6205557/"><em>“Transcriptomic and genomic profiling of early-stage ovarian carcinomas associated with histotype and overall survival [RNA-Seq]”</em></a> (ID: SRP11148), la elección fue basada únicamente en interés por el tema y número de muestras (n=96).</p>
-<div id="abstract" class="section level3 unnumbered">
-<h3><em>Abstract</em></h3>
-<p><em>“Ovarian cancer is the most lethal gynecological malignancy in the western world. Despite recent efforts to characterize ovarian cancer using molecular profiling, few targeted treatment options are currently available. Here, we examined genetic variants, fusion transcripts, SNP genotyping, and gene expression patterns for early-stage (I, II) ovarian carcinomas (n=96) in relation to clinicopathological characteristics and clinical outcome, thereby identifying novel genetic features of ovarian carcinomas. Furthermore, mutation frequencies of specific genetic variants and/or their gene expression patterns were associated with histotype and overall survival, e.g. SLC28A2 (mucinous ovarian carcinoma histotype), ARCN1 (low expression in 0-2 year survival group), and tumor suppressor MTUS1 (mutation status and overall survival). The long non-coding RNA MALAT1 was identified as a highly promiscuous fusion transcript in ovarian carcinoma. Moreover, gene expression deregulation for 23 genes was associated with tumor aggressiveness. Taken together, the novel biomarkers identified here may improve ovarian carcinoma subclassification and patient stratification according to histotype and overall survival. Overall design: Whole-transcriptome RNA sequencing (RNA-seq) was performed for 96 early-stage primary invasive ovarian carcinomas.”</em></p>
-</div>
-</div>
+<div id="importacion" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Importación de datos</h1>
+<p>Los datos de RNA-seq son descargados a través del paquete <a href="http://bioconductor.org/packages/release/bioc/html/recount3.html"><strong><em>recount3</em></strong></a> de <a href="http://bioconductor.org/"><strong><em>Bioconductor</em></strong></a>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="importacion.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## library(&quot;recount3&quot;)</span></span>
+<span id="cb2-2"><a href="importacion.html#cb2-2" aria-hidden="true" tabindex="-1"></a>human_projects <span class="ot">&lt;-</span> <span class="fu">available_projects</span>()</span>
+<span id="cb2-3"><a href="importacion.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="importacion.html#cb2-4" aria-hidden="true" tabindex="-1"></a>rse_gene_SRP111481 <span class="ot">&lt;-</span> <span class="fu">create_rse</span>(</span>
+<span id="cb2-5"><a href="importacion.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(</span>
+<span id="cb2-6"><a href="importacion.html#cb2-6" aria-hidden="true" tabindex="-1"></a>        human_projects,</span>
+<span id="cb2-7"><a href="importacion.html#cb2-7" aria-hidden="true" tabindex="-1"></a>        project <span class="sc">==</span> <span class="st">&quot;SRP111481&quot;</span> <span class="sc">&amp;</span> project_type <span class="sc">==</span> <span class="st">&quot;data_sources&quot;</span></span>
+<span id="cb2-8"><a href="importacion.html#cb2-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-9"><a href="importacion.html#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="importacion.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Convertir las cuentas por nucleotido a cuentas por lectura</span></span>
+<span id="cb3-2"><a href="importacion.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">assay</span>(rse_gene_SRP111481, <span class="st">&quot;counts&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">compute_read_counts</span>(rse_gene_SRP111481)</span></code></pre></div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="libs.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="libs.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="limpieza.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

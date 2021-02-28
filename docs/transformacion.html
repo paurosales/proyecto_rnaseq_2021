@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Transformación de datos | Proyecto RNA-Seq</title>
+  <meta name="description" content="4 Transformación de datos | Proyecto RNA-Seq" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Transformación de datos | Proyecto RNA-Seq" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Transformación de datos | Proyecto RNA-Seq" />
+  
+  
+  
+
+<meta name="author" content="Paulina Rosales Becerra" />
+
+
+<meta name="date" content="2021-02-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="limpieza.html"/>
+<link rel="next" href="normalizacion.html"/>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Proyecto RNA-Seq</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Generealidades</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#proyecto-datos-de-srp11148"><i class="fa fa-check"></i>Proyecto: Datos de SRP11148</a>
+<ul>
+<li><a href="index.html#abstract"><em>Abstract</em></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="libs.html"><a href="libs.html"><i class="fa fa-check"></i><b>1</b> Librerías utilizadas</a></li>
+<li class="chapter" data-level="2" data-path="importacion.html"><a href="importacion.html"><i class="fa fa-check"></i><b>2</b> Importación de datos</a></li>
+<li class="chapter" data-level="3" data-path="limpieza.html"><a href="limpieza.html"><i class="fa fa-check"></i><b>3</b> Limpieza y formateo de datos</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="limpieza.html"><a href="limpieza.html#formateo"><i class="fa fa-check"></i><b>3.1</b> Formateo</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="transformacion.html"><a href="transformacion.html"><i class="fa fa-check"></i><b>4</b> Transformación de datos</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="transformacion.html"><a href="transformacion.html#crear-una-nueva-variable-categórica"><i class="fa fa-check"></i><b>4.1</b> Crear una nueva variable categórica</a></li>
+<li class="chapter" data-level="4.2" data-path="transformacion.html"><a href="transformacion.html#filtrado"><i class="fa fa-check"></i><b>4.2</b> Filtrado</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="transformacion.html"><a href="transformacion.html#calidad-de-la-librería"><i class="fa fa-check"></i><b>4.2.1</b> Calidad de la librería</a></li>
+<li class="chapter" data-level="4.2.2" data-path="transformacion.html"><a href="transformacion.html#expr_filt"><i class="fa fa-check"></i><b>4.2.2</b> Niveles de expresión</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="normalizacion.html"><a href="normalizacion.html"><i class="fa fa-check"></i><b>5</b> Normalización</a></li>
+<li class="chapter" data-level="6" data-path="visualizacion.html"><a href="visualizacion.html"><i class="fa fa-check"></i><b>6</b> Visualización</a></li>
+<li class="chapter" data-level="7" data-path="modelaje.html"><a href="modelaje.html"><i class="fa fa-check"></i><b>7</b> Modelaje</a></li>
+<li class="chapter" data-level="8" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>8</b> Conclusiones</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Proyecto RNA-Seq</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="transformacion" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Transformación de datos</h1>
+<p>Una vez que los datos son legibles y manejables, podemos manipularlos de acuerdo al objetivo.</p>
+<div id="crear-una-nueva-variable-categórica" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Crear una nueva variable categórica</h2>
+<p>Crear la categoría <code>adult</code> para dividir en dos rangos de edad:</p>
+<ul>
+<li><p><code>young</code> - menor a 60 años</p></li>
+<li><p><code>old</code> - mayor o igual a 60 años</p></li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="transformacion.html#cb14-1" aria-hidden="true" tabindex="-1"></a>rse_gene_SRP111481<span class="sc">$</span>adult <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(rse_gene_SRP111481<span class="sc">$</span>sra_attribute.age <span class="sc">&lt;</span> <span class="dv">60</span>, <span class="st">&quot;young&quot;</span>, <span class="st">&quot;old&quot;</span>))</span>
+<span id="cb14-2"><a href="transformacion.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(rse_gene_SRP111481<span class="sc">$</span>adult)</span></code></pre></div>
+<pre><code>## 
+##   old young 
+##    60    36</code></pre>
+</div>
+<div id="filtrado" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Filtrado</h2>
+<p>Muchos de los datos pueden contener información desviada que haga ruido en nuestro análisis, por lo tanto es necesario eliminarla. Para la filtración utilizaremos dos parámetros:</p>
+<ul>
+<li><p><strong>Por calidad de la librería:</strong> de acuerdo a la proporción de lecturas asignadas a genes/lecturas totales.</p></li>
+<li><p><strong>Por niveles de expresión:</strong> de acuerdo a niveles promedio de expresión de los datos y valores como el <em>cpm (counts per million)</em>.</p></li>
+</ul>
+<div id="calidad-de-la-librería" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Calidad de la librería</h3>
+<p>Calculamos la proporción de genes asignados, donde valores cercanos a 1 indican mayor asignación de lecturas a genes. Dando a entender que la calidad de la librería es buena.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="transformacion.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calcular la proporcion de genes para saber la calidad</span></span>
+<span id="cb16-2"><a href="transformacion.html#cb16-2" aria-hidden="true" tabindex="-1"></a>rse_gene_SRP111481<span class="sc">$</span>assigned_gene_prop <span class="ot">&lt;-</span> rse_gene_SRP111481<span class="sc">$</span>recount_qc.gene_fc_count_all.assigned <span class="sc">/</span> rse_gene_SRP111481<span class="sc">$</span>recount_qc.gene_fc_count_all.total</span>
+<span id="cb16-3"><a href="transformacion.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rse_gene_SRP111481<span class="sc">$</span>assigned_gene_prop)</span></code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.1511  0.3725  0.4240  0.4166  0.4616  0.6476</code></pre>
+<p>Podemos ver que tenemos <strong>proporciones desde 0.1511 hasta 0.6476.</strong></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="transformacion.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Salvar el objeto entero en caso de necesitar regresar a la version original</span></span>
+<span id="cb18-2"><a href="transformacion.html#cb18-2" aria-hidden="true" tabindex="-1"></a>rse_gene_SRP111481_unfiltered <span class="ot">&lt;-</span> rse_gene_SRP111481</span></code></pre></div>
+<p>Además, analizando los cuartiles de cada rango en distintas variables, notamos que el primer cuartil de todas es ~0.3 por lo que podemos tomarlo como punto de corte.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="transformacion.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Comparar proporciones de cada grupo</span></span>
+<span id="cb19-2"><a href="transformacion.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Por rango de edad</span></span>
+<span id="cb19-3"><a href="transformacion.html#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">colData</span>(rse_gene_SRP111481), <span class="fu">tapply</span>(assigned_gene_prop, adult, summary))</span></code></pre></div>
+<pre><code>## $old
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.2036  0.3725  0.4231  0.4153  0.4661  0.5604 
+## 
+## $young
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.1511  0.3764  0.4240  0.4186  0.4559  0.6476</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="transformacion.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Por etapa FIGO</span></span>
+<span id="cb21-2"><a href="transformacion.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">colData</span>(rse_gene_SRP111481), <span class="fu">tapply</span>(assigned_gene_prop, sra_attribute.figo_stage, summary))</span></code></pre></div>
+<pre><code>## $I
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.2290  0.3708  0.4131  0.4164  0.4552  0.6476 
+## 
+## $II
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.1511  0.3795  0.4423  0.4169  0.4666  0.5604</code></pre>
+<p>Visualizando todas las proporciones nos damos cuenta de que la frecuencia de las proporciones menores son pocas, por lo tanto podemos eliminarlas.</p>
+<p>Al ser un análisis de calidad, evité eliminar datos cercanos a uno aunque se alejaran de la distrbución.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="transformacion.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## library(&quot;ggplot2&quot;)</span></span>
+<span id="cb23-2"><a href="transformacion.html#cb23-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">colData</span>(rse_gene_SRP111481)[, <span class="st">&quot;assigned_gene_prop&quot;</span>])</span>
+<span id="cb23-3"><a href="transformacion.html#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(plot_df) <span class="ot">&lt;-</span> <span class="st">&quot;Calidad&quot;</span></span>
+<span id="cb23-4"><a href="transformacion.html#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="transformacion.html#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(plot_df<span class="sc">$</span>Calidad, <span class="at">geom =</span> <span class="st">&quot;histogram&quot;</span>, <span class="at">col =</span> <span class="fu">I</span>(<span class="st">&quot;white&quot;</span>), <span class="at">xlab =</span> <span class="st">&quot;Proporción lecturas asignadas/totales&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Frecuencia&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Unfiltered Data&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/prop_hist-1.png" width="672" /></p>
+<p>Verificar cuántas variables se pierden.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="transformacion.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Estimación de punto de corte</span></span>
+<span id="cb24-2"><a href="transformacion.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(rse_gene_SRP111481<span class="sc">$</span>assigned_gene_prop <span class="sc">&lt;</span> <span class="fl">0.3</span>)</span></code></pre></div>
+<pre><code>## 
+## FALSE  TRUE 
+##    88     8</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="transformacion.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Eliminar aquellas muestras con proporciones bajas</span></span>
+<span id="cb26-2"><a href="transformacion.html#cb26-2" aria-hidden="true" tabindex="-1"></a>rse_gene_SRP111481 <span class="ot">&lt;-</span> rse_gene_SRP111481[, rse_gene_SRP111481<span class="sc">$</span>assigned_gene_prop <span class="sc">&gt;</span> <span class="fl">0.3</span>]</span></code></pre></div>
+</div>
+<div id="expr_filt" class="section level3" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Niveles de expresión</h3>
+<p>Necesitamos crear un objeto <code>DGEList</code> <em>(Differential Gene Expression List)</em> a partir de las lecturas. Con él podremos manipular e interpretar los niveles de expresión, y así, podemos eliminar datos ruidosos.</p>
+<p>Es necesario que la <strong>normalizacion de datos</strong> se lleve a acabo desde este punto para evitar que las diferencias por normalización sean filtradas.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="transformacion.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">## library(&quot;edgeR&quot;)</span></span>
+<span id="cb27-2"><a href="transformacion.html#cb27-2" aria-hidden="true" tabindex="-1"></a>dge <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(</span>
+<span id="cb27-3"><a href="transformacion.html#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">counts =</span> <span class="fu">assay</span>(rse_gene_SRP111481, <span class="st">&quot;counts&quot;</span>),</span>
+<span id="cb27-4"><a href="transformacion.html#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">genes =</span> <span class="fu">rowData</span>(rse_gene_SRP111481)</span>
+<span id="cb27-5"><a href="transformacion.html#cb27-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-6"><a href="transformacion.html#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Calcular factores para normalización</span></span>
+<span id="cb27-7"><a href="transformacion.html#cb27-7" aria-hidden="true" tabindex="-1"></a>dge_unnorm <span class="ot">&lt;-</span> dge</span>
+<span id="cb27-8"><a href="transformacion.html#cb27-8" aria-hidden="true" tabindex="-1"></a>dge <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(dge)</span></code></pre></div>
+<p>Utilizamos valores como el <em>cpm</em> para la filtración posterior.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="transformacion.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Convertir las cuentas a cmp con edgeR</span></span>
+<span id="cb28-2"><a href="transformacion.html#cb28-2" aria-hidden="true" tabindex="-1"></a>cpm <span class="ot">&lt;-</span> <span class="fu">cpm</span>(dge)</span>
+<span id="cb28-3"><a href="transformacion.html#cb28-3" aria-hidden="true" tabindex="-1"></a>lcpm <span class="ot">&lt;-</span> <span class="fu">cpm</span>(dge, <span class="at">log=</span><span class="cn">TRUE</span>)</span>
+<span id="cb28-4"><a href="transformacion.html#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="transformacion.html#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Tamaño de libreria aprox</span></span>
+<span id="cb28-6"><a href="transformacion.html#cb28-6" aria-hidden="true" tabindex="-1"></a>L <span class="ot">&lt;-</span> <span class="fu">mean</span>(dge<span class="sc">$</span>samples<span class="sc">$</span>lib.size) <span class="sc">*</span> <span class="fl">1e-6</span></span>
+<span id="cb28-7"><a href="transformacion.html#cb28-7" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">median</span>(dge<span class="sc">$</span>samples<span class="sc">$</span>lib.size) <span class="sc">*</span> <span class="fl">1e-6</span></span>
+<span id="cb28-8"><a href="transformacion.html#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(L, M)</span></code></pre></div>
+<pre><code>## [1] 8.417463 8.261144</code></pre>
+<p>En nuestro <em>dataset</em> contamos con 373 genes (0.5% de los genes totales) que no se expresan, por lo tanto no son significativos para nuestro análisis y podemos eliminarlos.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="transformacion.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">rowSums</span>(dge<span class="sc">$</span>counts<span class="sc">==</span><span class="dv">0</span>)<span class="sc">==</span><span class="dv">9</span>)</span></code></pre></div>
+<pre><code>## 
+## FALSE  TRUE 
+## 63483   373</code></pre>
+<p>Además determinarémos cuáles genes cuentan con un nivel de expresión significativo con la función <code>filterByExpr</code>.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="transformacion.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Salvar dge en caso de neceesitar el original</span></span>
+<span id="cb32-2"><a href="transformacion.html#cb32-2" aria-hidden="true" tabindex="-1"></a>dge_unfiltered <span class="ot">&lt;-</span> dge</span>
+<span id="cb32-3"><a href="transformacion.html#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="transformacion.html#cb32-4" aria-hidden="true" tabindex="-1"></a>keep.exprs <span class="ot">&lt;-</span> <span class="fu">filterByExpr</span>(dge)</span>
+<span id="cb32-5"><a href="transformacion.html#cb32-5" aria-hidden="true" tabindex="-1"></a>dge <span class="ot">&lt;-</span> dge[keep.exprs,, keep.lib.sizes<span class="ot">=</span><span class="cn">FALSE</span>]</span>
+<span id="cb32-6"><a href="transformacion.html#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(dge)</span></code></pre></div>
+<pre><code>## [1] 14984    88</code></pre>
+<p>Cálculo del punto de corte a partir del <em>cpm</em>.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="transformacion.html#cb34-1" aria-hidden="true" tabindex="-1"></a>lcpm.cutoff <span class="ot">&lt;-</span> <span class="fu">log2</span>(<span class="dv">10</span><span class="sc">/</span>M <span class="sc">+</span> <span class="dv">2</span><span class="sc">/</span>L)</span>
+<span id="cb34-2"><a href="transformacion.html#cb34-2" aria-hidden="true" tabindex="-1"></a>samplenames <span class="ot">&lt;-</span> <span class="fu">substring</span>(<span class="fu">colnames</span>(dge), <span class="dv">12</span>, <span class="fu">nchar</span>(<span class="fu">colnames</span>(dge)))</span>
+<span id="cb34-3"><a href="transformacion.html#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="transformacion.html#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="do">## library(&quot;RColorBrewer&quot;)</span></span>
+<span id="cb34-5"><a href="transformacion.html#cb34-5" aria-hidden="true" tabindex="-1"></a>nsamples <span class="ot">&lt;-</span> <span class="fu">ncol</span>(dge)</span>
+<span id="cb34-6"><a href="transformacion.html#cb34-6" aria-hidden="true" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(nsamples, <span class="st">&quot;Paired&quot;</span>)</span>
+<span id="cb34-7"><a href="transformacion.html#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb34-8"><a href="transformacion.html#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(lcpm[,<span class="dv">1</span>]), <span class="at">col=</span>col[<span class="dv">1</span>], <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.26</span>), <span class="at">las=</span><span class="dv">2</span>, <span class="at">main=</span><span class="st">&quot;&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb34-9"><a href="transformacion.html#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main=</span><span class="st">&quot;A. Raw data&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Log-cpm&quot;</span>)</span>
+<span id="cb34-10"><a href="transformacion.html#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>lcpm.cutoff, <span class="at">lty=</span><span class="dv">3</span>)</span>
+<span id="cb34-11"><a href="transformacion.html#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>nsamples){</span>
+<span id="cb34-12"><a href="transformacion.html#cb34-12" aria-hidden="true" tabindex="-1"></a>den <span class="ot">&lt;-</span> <span class="fu">density</span>(lcpm[,i])</span>
+<span id="cb34-13"><a href="transformacion.html#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(den<span class="sc">$</span>x, den<span class="sc">$</span>y, <span class="at">col=</span>col[i], <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb34-14"><a href="transformacion.html#cb34-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb34-15"><a href="transformacion.html#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, samplenames, <span class="at">text.col=</span>col, <span class="at">bty=</span><span class="st">&quot;n&quot;</span>)</span>
+<span id="cb34-16"><a href="transformacion.html#cb34-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-17"><a href="transformacion.html#cb34-17" aria-hidden="true" tabindex="-1"></a>lcpm <span class="ot">&lt;-</span> <span class="fu">cpm</span>(dge, <span class="at">log=</span><span class="cn">TRUE</span>)</span>
+<span id="cb34-18"><a href="transformacion.html#cb34-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(lcpm[,<span class="dv">1</span>]), <span class="at">col=</span>col[<span class="dv">1</span>], <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.26</span>), <span class="at">las=</span><span class="dv">2</span>, <span class="at">main=</span><span class="st">&quot;&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb34-19"><a href="transformacion.html#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main=</span><span class="st">&quot;B. Filtered data&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Log-cpm&quot;</span>)</span>
+<span id="cb34-20"><a href="transformacion.html#cb34-20" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>lcpm.cutoff, <span class="at">lty=</span><span class="dv">3</span>)</span>
+<span id="cb34-21"><a href="transformacion.html#cb34-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>nsamples){</span>
+<span id="cb34-22"><a href="transformacion.html#cb34-22" aria-hidden="true" tabindex="-1"></a>den <span class="ot">&lt;-</span> <span class="fu">density</span>(lcpm[,i])</span>
+<span id="cb34-23"><a href="transformacion.html#cb34-23" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(den<span class="sc">$</span>x, den<span class="sc">$</span>y, <span class="at">col=</span>col[i], <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb34-24"><a href="transformacion.html#cb34-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb34-25"><a href="transformacion.html#cb34-25" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, samplenames, <span class="at">text.col=</span>col, <span class="at">bty=</span><span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="transformacion.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Niveles medios de expresión</span></span>
+<span id="cb35-2"><a href="transformacion.html#cb35-2" aria-hidden="true" tabindex="-1"></a>gene_means <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(<span class="fu">assay</span>(rse_gene_SRP111481, <span class="st">&quot;counts&quot;</span>))</span>
+<span id="cb35-3"><a href="transformacion.html#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gene_means)</span></code></pre></div>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+##       0.0       0.0       1.2     131.8      22.0 1966090.7</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="transformacion.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Eliminar genes no significativos</span></span>
+<span id="cb37-2"><a href="transformacion.html#cb37-2" aria-hidden="true" tabindex="-1"></a>rse_gene_SRP111481 <span class="ot">&lt;-</span> rse_gene_SRP111481[gene_means <span class="sc">&gt;</span> <span class="fl">0.1</span>, ]</span>
+<span id="cb37-3"><a href="transformacion.html#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="transformacion.html#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Dimensiones finales</span></span>
+<span id="cb37-5"><a href="transformacion.html#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(rse_gene_SRP111481)</span></code></pre></div>
+<pre><code>## [1] 45206    88</code></pre>
+<p>Recordemos que las dimensiones originales eran de 63856 genes y 96 muestras, por lo tanto <strong>eliminamos un total de 45206 genes y 8 muestras</strong>.</p>
+<p><strong>Manteniendo el 70.79% de los genes originales.</strong></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="transformacion.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Porcentaje de genes que retuvimos</span></span>
+<span id="cb39-2"><a href="transformacion.html#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">nrow</span>(rse_gene_SRP111481) <span class="sc">/</span> <span class="fu">nrow</span>(rse_gene_SRP111481_unfiltered) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 70.79</code></pre>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="limpieza.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="normalizacion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/paurosales/proyecto_rnaseq_2021/edit/master/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/paurosales/proyecto_rnaseq_2021/blob/master/index.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

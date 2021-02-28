@@ -1,0 +1,13 @@
+libs
+importacion
+limpieza
+formateo
+transformacion
+crear-una-nueva-variable-categórica
+filtrado
+calidad-de-la-librería
+expr_filt
+normalizacion
+visualizacion
+modelaje
+conclusiones
