@@ -24,7 +24,7 @@
 <meta name="author" content="Paulina Rosales-Becerra" />
 
 
-<meta name="date" content="2021-02-28" />
+<meta name="date" content="2021-03-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -183,38 +183,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="modelaje" class="section level1" number="7">
 <h1><span class="header-section-number">7</span> Modelaje</h1>
 <p>Utilizamos <code>model.matrix()</code> para modelar las distintas categorías de nuestro <em>dataset</em>, este modelaje nos ayudará a en análisis de expresión diferencial.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="modelaje.html#cb44-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> sra_attribute.age <span class="sc">+</span> adult <span class="sc">+</span> sra_attribute.figo_stage <span class="sc">+</span> assigned_gene_prop,</span>
-<span id="cb44-2"><a href="modelaje.html#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">colData</span>(rse_gene_SRP111481)</span>
-<span id="cb44-3"><a href="modelaje.html#cb44-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb44-4"><a href="modelaje.html#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mod)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="modelaje.html#cb45-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> sra_attribute.age <span class="sc">+</span> adult <span class="sc">+</span> sra_attribute.figo_stage <span class="sc">+</span> assigned_gene_prop,</span>
+<span id="cb45-2"><a href="modelaje.html#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">colData</span>(rse_gene_SRP111481)</span>
+<span id="cb45-3"><a href="modelaje.html#cb45-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb45-4"><a href="modelaje.html#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mod)</span></code></pre></div>
 <pre><code>## [1] &quot;(Intercept)&quot;                &quot;sra_attribute.age&quot;         
 ## [3] &quot;adultyoung&quot;                 &quot;sra_attribute.figo_stageII&quot;
 ## [5] &quot;assigned_gene_prop&quot;</code></pre>
 <p>Antes del ajuste de datos necesitamos saber qué tan desviados están, así el ajuste será el adecuado.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="modelaje.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="do">## library(&quot;limma&quot;)</span></span>
-<span id="cb46-2"><a href="modelaje.html#cb46-2" aria-hidden="true" tabindex="-1"></a>vGene <span class="ot">&lt;-</span> <span class="fu">voom</span>(dge, mod, <span class="at">plot =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="modelaje.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="do">## library(&quot;limma&quot;)</span></span>
+<span id="cb47-2"><a href="modelaje.html#cb47-2" aria-hidden="true" tabindex="-1"></a>vGene <span class="ot">&lt;-</span> <span class="fu">voom</span>(dge, mod, <span class="at">plot =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/voom-1.png" width="672" /></p>
 <p>Ajuste de datos y evaluación respecto a la categoría <code>figo_stage</code> (<code>coef = 4</code>).</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="modelaje.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Ajuste de datos</span></span>
-<span id="cb47-2"><a href="modelaje.html#cb47-2" aria-hidden="true" tabindex="-1"></a>eb_results <span class="ot">&lt;-</span> <span class="fu">eBayes</span>(<span class="fu">lmFit</span>(vGene))</span>
-<span id="cb47-3"><a href="modelaje.html#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-4"><a href="modelaje.html#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Rank de datos</span></span>
-<span id="cb47-5"><a href="modelaje.html#cb47-5" aria-hidden="true" tabindex="-1"></a>de_results <span class="ot">&lt;-</span> <span class="fu">topTable</span>(</span>
-<span id="cb47-6"><a href="modelaje.html#cb47-6" aria-hidden="true" tabindex="-1"></a>    eb_results,</span>
-<span id="cb47-7"><a href="modelaje.html#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">coef =</span> <span class="dv">4</span>,</span>
-<span id="cb47-8"><a href="modelaje.html#cb47-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">number =</span> <span class="fu">nrow</span>(rse_gene_SRP111481),</span>
-<span id="cb47-9"><a href="modelaje.html#cb47-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sort.by =</span> <span class="st">&quot;none&quot;</span></span>
-<span id="cb47-10"><a href="modelaje.html#cb47-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb47-11"><a href="modelaje.html#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(de_results)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="modelaje.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Ajuste de datos</span></span>
+<span id="cb48-2"><a href="modelaje.html#cb48-2" aria-hidden="true" tabindex="-1"></a>eb_results <span class="ot">&lt;-</span> <span class="fu">eBayes</span>(<span class="fu">lmFit</span>(vGene))</span>
+<span id="cb48-3"><a href="modelaje.html#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="modelaje.html#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Rank de datos</span></span>
+<span id="cb48-5"><a href="modelaje.html#cb48-5" aria-hidden="true" tabindex="-1"></a>de_results <span class="ot">&lt;-</span> <span class="fu">topTable</span>(</span>
+<span id="cb48-6"><a href="modelaje.html#cb48-6" aria-hidden="true" tabindex="-1"></a>    eb_results,</span>
+<span id="cb48-7"><a href="modelaje.html#cb48-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">coef =</span> <span class="dv">4</span>,</span>
+<span id="cb48-8"><a href="modelaje.html#cb48-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">number =</span> <span class="fu">nrow</span>(rse_gene_SRP111481),</span>
+<span id="cb48-9"><a href="modelaje.html#cb48-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sort.by =</span> <span class="st">&quot;none&quot;</span></span>
+<span id="cb48-10"><a href="modelaje.html#cb48-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-11"><a href="modelaje.html#cb48-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(de_results)</span></code></pre></div>
 <pre><code>## [1] 14984    16</code></pre>
 <p>En la siguiente <strong>gráfica MA</strong> no vemos diferencias significativas de expresión en las dos etapas FIGO: I (valores positivos) y II (valores negativos).</p>
 <p>Además de que no hay una formación de conos fuerte, probablemente esto se deba a la limpieza de genes con bajos niveles de expresión.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="modelaje.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Visualicemos los resultados estadísticos</span></span>
-<span id="cb49-2"><a href="modelaje.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotMA</span>(eb_results, <span class="at">coef =</span> <span class="dv">4</span>, <span class="at">main =</span> <span class="st">&quot;FIGO Stage II&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/visual_-1.png" width="672" /></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="modelaje.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Visualicemos los resultados estadísticos</span></span>
+<span id="cb50-2"><a href="modelaje.html#cb50-2" aria-hidden="true" tabindex="-1"></a>limma<span class="sc">::</span><span class="fu">plotMA</span>(eb_results, <span class="at">coef =</span> <span class="dv">4</span>, <span class="at">main =</span> <span class="st">&quot;FIGO Stage II&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/visual_MA-1.png" width="672" /></p>
 <p>En el <strong><em>volcano plot</em></strong> los 5 genes con mayor expresión en la Etapa FIGO II (resaltados en morado), están muy distanciados de la mayoría de los genes. De manera que la expresión <strong>diferencial</strong> es clara visualmente.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="modelaje.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">volcanoplot</span>(eb_results, <span class="at">coef =</span> <span class="dv">4</span>, <span class="at">highlight =</span> <span class="dv">5</span>, <span class="at">names =</span> de_results<span class="sc">$</span>gene_name, <span class="at">col=</span><span class="st">&quot;grey&quot;</span>, <span class="at">hl.col =</span> col[<span class="dv">10</span>])</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="modelaje.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">volcanoplot</span>(eb_results, <span class="at">coef =</span> <span class="dv">4</span>, <span class="at">highlight =</span> <span class="dv">5</span>, <span class="at">names =</span> de_results<span class="sc">$</span>gene_name, <span class="at">col=</span><span class="st">&quot;grey&quot;</span>, <span class="at">hl.col =</span> col[<span class="dv">10</span>])</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/visual_volcano-1.png" width="672" />
 En el visualización con el <strong><em>heatmap</em></strong> combinamos las tres categorías utilizadas a lo largo del proyecto (edad, rango de edad, Etapa FIGO). Destacan tres patrones de esta visulización:</p>
 <ol style="list-style-type: decimal">
 <li><p>La formación de un <strong>clúster</strong> compuesto casi en su totalidad por muestras en <strong>Etapa FIGO I</strong>.</p></li>
@@ -223,32 +223,26 @@ En el visualización con el <strong><em>heatmap</em></strong> combinamos las tre
 </ol>
 <p>Los últimos dos patrones son consistentes con los resultados expuestos en el <em>volcano plot</em> del punto anterior.</p>
 <p>De igual manera es importante destacar que aparentemente no existe una relación estrecha entre expresión diferencial y edad.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="modelaje.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Extraer valores de los genes de interés</span></span>
-<span id="cb51-2"><a href="modelaje.html#cb51-2" aria-hidden="true" tabindex="-1"></a>exprs_heatmap <span class="ot">&lt;-</span> vGene<span class="sc">$</span>E[<span class="fu">rank</span>(de_results<span class="sc">$</span>adj.P.Val) <span class="sc">&lt;=</span> <span class="dv">50</span>, ]</span>
-<span id="cb51-3"><a href="modelaje.html#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-4"><a href="modelaje.html#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Creemos una tabla con información de las muestras</span></span>
-<span id="cb51-5"><a href="modelaje.html#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="do">## y con nombres de columnas más amigables</span></span>
-<span id="cb51-6"><a href="modelaje.html#cb51-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">colData</span>(rse_gene_SRP111481)[, <span class="fu">c</span>(<span class="st">&quot;sra_attribute.age&quot;</span>, <span class="st">&quot;adult&quot;</span>, <span class="st">&quot;sra_attribute.figo_stage&quot;</span>)])</span>
-<span id="cb51-7"><a href="modelaje.html#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Age&quot;</span>, <span class="st">&quot;AgeGroup&quot;</span>, <span class="st">&quot;FIGO_Stage&quot;</span>)</span>
-<span id="cb51-8"><a href="modelaje.html#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-9"><a href="modelaje.html#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Hagamos un heatmap</span></span>
-<span id="cb51-10"><a href="modelaje.html#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;pheatmap&quot;</span>)</span>
-<span id="cb51-11"><a href="modelaje.html#cb51-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los nombres a partir de los IDs en el arreglo general</span></span>
-<span id="cb51-12"><a href="modelaje.html#cb51-12" aria-hidden="true" tabindex="-1"></a>namesIndex <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="fu">rownames</span>(exprs_heatmap), de_results<span class="sc">$</span>gene_id)</span>
-<span id="cb51-13"><a href="modelaje.html#cb51-13" aria-hidden="true" tabindex="-1"></a>geneNames <span class="ot">&lt;-</span> de_results<span class="sc">$</span>gene_name[namesIndex]</span>
-<span id="cb51-14"><a href="modelaje.html#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Modificar los nombres del heatmap</span></span>
-<span id="cb51-15"><a href="modelaje.html#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(exprs_heatmap) <span class="ot">&lt;-</span> geneNames</span>
-<span id="cb51-16"><a href="modelaje.html#cb51-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-17"><a href="modelaje.html#cb51-17" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(</span>
-<span id="cb51-18"><a href="modelaje.html#cb51-18" aria-hidden="true" tabindex="-1"></a>    exprs_heatmap,</span>
-<span id="cb51-19"><a href="modelaje.html#cb51-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster_rows =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb51-20"><a href="modelaje.html#cb51-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster_cols =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb51-21"><a href="modelaje.html#cb51-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">show_rownames =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb51-22"><a href="modelaje.html#cb51-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">show_colnames =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb51-23"><a href="modelaje.html#cb51-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">annotation_col =</span> df, </span>
-<span id="cb51-24"><a href="modelaje.html#cb51-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize_row =</span> <span class="dv">4</span></span>
-<span id="cb51-25"><a href="modelaje.html#cb51-25" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="modelaje.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Extraer valores de los genes de interés</span></span>
+<span id="cb52-2"><a href="modelaje.html#cb52-2" aria-hidden="true" tabindex="-1"></a>exprs_heatmap <span class="ot">&lt;-</span> vGene<span class="sc">$</span>E[<span class="fu">rank</span>(de_results<span class="sc">$</span>adj.P.Val) <span class="sc">&lt;=</span> <span class="dv">50</span>, ]</span>
+<span id="cb52-3"><a href="modelaje.html#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="modelaje.html#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="do">## library(&quot;pheatmap&quot;)</span></span>
+<span id="cb52-5"><a href="modelaje.html#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los nombres a partir de los IDs en el arreglo general</span></span>
+<span id="cb52-6"><a href="modelaje.html#cb52-6" aria-hidden="true" tabindex="-1"></a>namesIndex <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="fu">rownames</span>(exprs_heatmap), de_results<span class="sc">$</span>gene_id)</span>
+<span id="cb52-7"><a href="modelaje.html#cb52-7" aria-hidden="true" tabindex="-1"></a>geneNames <span class="ot">&lt;-</span> de_results<span class="sc">$</span>gene_name[namesIndex]</span>
+<span id="cb52-8"><a href="modelaje.html#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Modificar los nombres del heatmap</span></span>
+<span id="cb52-9"><a href="modelaje.html#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(exprs_heatmap) <span class="ot">&lt;-</span> geneNames</span>
+<span id="cb52-10"><a href="modelaje.html#cb52-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-11"><a href="modelaje.html#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(</span>
+<span id="cb52-12"><a href="modelaje.html#cb52-12" aria-hidden="true" tabindex="-1"></a>    exprs_heatmap,</span>
+<span id="cb52-13"><a href="modelaje.html#cb52-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster_rows =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb52-14"><a href="modelaje.html#cb52-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster_cols =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb52-15"><a href="modelaje.html#cb52-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">show_rownames =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb52-16"><a href="modelaje.html#cb52-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">show_colnames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb52-17"><a href="modelaje.html#cb52-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">annotation_col =</span> df, </span>
+<span id="cb52-18"><a href="modelaje.html#cb52-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize_row =</span> <span class="dv">4</span></span>
+<span id="cb52-19"><a href="modelaje.html#cb52-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/visual_heatmap-1.png" width="672" /></p>
 </div>
             </section>
 

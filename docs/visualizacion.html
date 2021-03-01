@@ -24,7 +24,7 @@
 <meta name="author" content="Paulina Rosales-Becerra" />
 
 
-<meta name="date" content="2021-02-28" />
+<meta name="date" content="2021-03-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -196,14 +196,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb42-4"><a href="visualizacion.html#cb42-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
 <span id="cb42-5"><a href="visualizacion.html#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;Assigned Gene Prop&quot;</span>) <span class="sc">+</span></span>
 <span id="cb42-6"><a href="visualizacion.html#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;FIGO Stage&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/visual_1-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/visual_points-1.png" width="672" /></p>
 <p>En la siguiente gráfica tratamos de visualizar la <strong>relación entre la edad y la Etapa FIGO</strong>. Donde la Etapa FIGO I muestra un rango de edad más corto, con una ligera tendencia a edades mayores (basándonos en la longitud de los bigotes). Sin embargo puede ser que dicha tendencia no sea significativa.</p>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="visualizacion.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">y =</span> sra_attribute.age, <span class="at">x =</span> sra_attribute.figo_stage)) <span class="sc">+</span> </span>
 <span id="cb43-2"><a href="visualizacion.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">varwidth=</span>T, <span class="at">fill=</span> col[<span class="dv">4</span><span class="sc">:</span><span class="dv">5</span>]) <span class="sc">+</span> </span>
 <span id="cb43-3"><a href="visualizacion.html#cb43-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Variables relation&quot;</span>,</span>
 <span id="cb43-4"><a href="visualizacion.html#cb43-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">x=</span><span class="st">&quot;FIGO Stage&quot;</span>,</span>
 <span id="cb43-5"><a href="visualizacion.html#cb43-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">y=</span><span class="st">&quot;Age&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/visual_2-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/visual_boxplot-1.png" width="672" /></p>
+<p>Para análisis posteriores es necesario verificar si se forman clúster de expresión diferencial. A partir de <strong>gráficas MDS</strong> visualizamos la agrupación de muestras de acuerdo a alguno de los valores de las variables indicativas y sus niveles de expresión.</p>
+<p>Las gráficas muestran poca definición de clústers, hay una ligera agrupación en la gráfica de Etapas FIGO (B), donde las muestras con Etapa FIGO I se concentran en el centro de la gráfica. Análisis posteriores nos permitirán determinar qué tan significativas son estas agrupaciones.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="visualizacion.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Crear un dataframe con información de las muestras y con nombres de columnas más amigables</span></span>
+<span id="cb44-2"><a href="visualizacion.html#cb44-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">colData</span>(rse_gene_SRP111481)[, <span class="fu">c</span>(<span class="st">&quot;sra_attribute.age&quot;</span>, <span class="st">&quot;adult&quot;</span>, <span class="st">&quot;sra_attribute.figo_stage&quot;</span>)])</span>
+<span id="cb44-3"><a href="visualizacion.html#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Age&quot;</span>, <span class="st">&quot;AgeGroup&quot;</span>, <span class="st">&quot;FIGO_Stage&quot;</span>)</span>
+<span id="cb44-4"><a href="visualizacion.html#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="visualizacion.html#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Graficas MDS</span></span>
+<span id="cb44-6"><a href="visualizacion.html#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb44-7"><a href="visualizacion.html#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plotMDS</span>(lcpm, <span class="at">labels=</span> <span class="fu">levels</span>(df<span class="sc">$</span>AgeGroup), <span class="at">col=</span>col[<span class="dv">9</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">dim=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb44-8"><a href="visualizacion.html#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main=</span><span class="st">&quot;A. Age Group&quot;</span>)</span>
+<span id="cb44-9"><a href="visualizacion.html#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plotMDS</span>(lcpm, <span class="at">labels=</span><span class="fu">levels</span>(df<span class="sc">$</span>FIGO_Stage), <span class="at">col=</span>col[<span class="dv">6</span><span class="sc">:</span><span class="dv">7</span>])</span>
+<span id="cb44-10"><a href="visualizacion.html#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main=</span><span class="st">&quot;B. FIGO Stage&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/visual_MDS-1.png" width="672" /></p>
 </div>
             </section>
 

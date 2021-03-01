@@ -344,7 +344,7 @@ Recordemos que previamente en la [transformación de datos](#transformacion), cr
 En esta primer gráfica podemos ver la **proporción de genes asignados de acuerdo a a edad y la Etapa FIGO**. A manera general podemos decir que no existe un patrón evidente que relacione algunas de las variables directamente, lo que posiblemente indique que son independientes entre sí.
 
 
-```{r visual_1}
+```{r visual_points}
 plot_df <- as.data.frame(colData(rse_gene_SRP111481))
 ggplot(as.data.frame(colData(rse_gene_SRP111481)), aes(y = assigned_gene_prop, x = sra_attribute.figo_stage)) +
     geom_point(aes(col = adult, size = sra_attribute.age))+ 
@@ -355,7 +355,7 @@ ggplot(as.data.frame(colData(rse_gene_SRP111481)), aes(y = assigned_gene_prop, x
 
 En la siguiente gráfica tratamos de visualizar la **relación entre la edad y la Etapa FIGO**. Donde la Etapa FIGO I muestra un rango de edad más corto, con una ligera tendencia a edades mayores (basándonos en la longitud de los bigotes). Sin embargo puede ser que dicha tendencia no sea significativa.
 
-```{r visual_2}
+```{r visual_boxplot}
 ggplot(plot_df, aes(y = sra_attribute.age, x = sra_attribute.figo_stage)) + 
   geom_boxplot(varwidth=T, fill= col[4:5]) + 
     labs(title="Variables relation",
@@ -363,6 +363,23 @@ ggplot(plot_df, aes(y = sra_attribute.age, x = sra_attribute.figo_stage)) +
          y="Age")
 ```
 
+Para análisis posteriores es necesario verificar si se forman clúster de expresión diferencial. A partir de **gráficas MDS** visualizamos la agrupación de muestras de acuerdo a alguno de los valores de las variables indicativas y sus niveles de expresión.
+
+Las gráficas muestran poca definición de clústers, hay una ligera agrupación en la gráfica de Etapas FIGO (B), donde las muestras con Etapa FIGO I se concentran en el centro de la gráfica. Análisis posteriores nos permitirán determinar qué tan significativas son estas agrupaciones.
+
+```{r visual_MDS, message=FALSE, warning=FALSE}
+## Crear un dataframe con información de las muestras y con nombres de columnas más amigables
+df <- as.data.frame(colData(rse_gene_SRP111481)[, c("sra_attribute.age", "adult", "sra_attribute.figo_stage")])
+colnames(df) <- c("Age", "AgeGroup", "FIGO_Stage")
+
+## Graficas MDS
+par(mfrow=c(1,2))
+plotMDS(lcpm, labels= levels(df$AgeGroup), col=col[9:10], dim=c(3,4))
+title(main="A. Age Group")
+plotMDS(lcpm, labels=levels(df$FIGO_Stage), col=col[6:7])
+title(main="B. FIGO Stage")
+
+```
 
 # Modelaje {#modelaje}
 
@@ -400,14 +417,14 @@ En la siguiente **gráfica MA** no vemos diferencias significativas de expresió
 
 Además de que no hay una formación de conos fuerte, probablemente esto se deba a la limpieza de genes con bajos niveles de expresión.
 
-```{r visual_}
+```{r visual_MA}
 ## Visualicemos los resultados estadísticos
-plotMA(eb_results, coef = 4, main = "FIGO Stage II")
+limma::plotMA(eb_results, coef = 4, main = "FIGO Stage II")
 ```
 
 En el ***volcano plot*** los 5 genes con mayor expresión en la Etapa FIGO II (resaltados en morado), están muy distanciados de la mayoría de los genes. De manera que la expresión **diferencial** es clara visualmente.
 
-```{r}
+```{r visual_volcano}
 volcanoplot(eb_results, coef = 4, highlight = 5, names = de_results$gene_name, col="grey", hl.col = col[10])
 ```
 En el visualización con el ***heatmap*** combinamos las tres categorías utilizadas a lo largo del proyecto (edad, rango de edad, Etapa FIGO). Destacan tres patrones de esta visulización:
@@ -422,17 +439,11 @@ Los últimos dos patrones son consistentes con los resultados expuestos en el *v
 
 De igual manera es importante destacar que aparentemente no existe una relación estrecha entre expresión diferencial y edad.
 
-```{r}
+```{r visual_heatmap}
 ## Extraer valores de los genes de interés
 exprs_heatmap <- vGene$E[rank(de_results$adj.P.Val) <= 50, ]
 
-## Creemos una tabla con información de las muestras
-## y con nombres de columnas más amigables
-df <- as.data.frame(colData(rse_gene_SRP111481)[, c("sra_attribute.age", "adult", "sra_attribute.figo_stage")])
-colnames(df) <- c("Age", "AgeGroup", "FIGO_Stage")
-
-## Hagamos un heatmap
-library("pheatmap")
+## library("pheatmap")
 # Obtener los nombres a partir de los IDs en el arreglo general
 namesIndex <- match(rownames(exprs_heatmap), de_results$gene_id)
 geneNames <- de_results$gene_name[namesIndex]
