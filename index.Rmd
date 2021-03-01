@@ -1,17 +1,30 @@
 --- 
-title: "Proyecto RNA-Seq"
-author: "Paulina Rosales Becerra"
+title: "Proyecto RNA-seq"
+author: "Paulina Rosales-Becerra"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
+favicon: "dna_favicon.png"
 ---
 
-# Generealidades {-}
+# Generalidades {-}
 
-Este proyecto busca retomar las herramientas y conocimientos recuperados en el [curso de RNA-seq 2021](https://github.com/lcolladotor/rnaseq_LCG-UNAM_2021) impartido por [Leonardo Collado-Torres](http://lcolladotor.github.io/) para los estudiantes de la [Licenciatura en Ciencias Genómicas](https://lcg.unam.mx/).
+Este proyecto busca retomar las herramientas y conocimientos recuperados en el [curso de RNA-seq 2021](https://github.com/lcolladotor/rnaseq_LCG-UNAM_2021) impartido por [Leonardo Collado-Torres](http://lcolladotor.github.io/) para los estudiantes de la [Licenciatura en Ciencias Genómicas](https://lcg.unam.mx/) de la UNAM.
+
+## Ligas externas
+
+- [Información Paulina Rosales-Becerra](https://paurosales.github.io/)
+
+- [GitHub Paulina Rosales-Becerra](https://github.com/paurosales)
+
+- [Repositorio del curso](https://github.com/lcolladotor/rnaseq_LCG-UNAM_2021)
+
+- [Notas del curso](https://github.com/paurosales/curso_rnaseq_2021)
+
+- [Repositorio del proyecto *(source code)*](https://github.com/paurosales/proyecto_rnaseq_2021)
 
 ## Proyecto: Datos de SRP11148 {-}
 
-El proyecto que elegí fue: [*"Transcriptomic and genomic profiling of early-stage ovarian carcinomas associated with histotype and overall survival [RNA-Seq]"*](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6205557/) (ID: SRP11148), la elección fue basada únicamente en interés por el tema y número de muestras (n=96).
+El proyecto que elegí fue: [*"Transcriptomic and genomic profiling of early-stage ovarian carcinomas associated with histotype and overall survival [RNA-seq]"*](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6205557/) (ID: SRP11148), la elección fue basada únicamente en interés por el tema y número de muestras (n=96).
 
 ### *Abstract* {-}
 
@@ -148,7 +161,7 @@ summary(rse_gene_SRP111481$assigned_gene_prop)
 ```
 Podemos ver que tenemos **proporciones desde 0.1511 hasta 0.6476.**
 
-```{r}
+```{r save_unfilt}
 ## Salvar el objeto entero en caso de necesitar regresar a la version original
 rse_gene_SRP111481_unfiltered <- rse_gene_SRP111481
 ```
@@ -357,14 +370,14 @@ colnames(mod)
 ```
 Antes del ajuste de datos necesitamos saber qué tan desviados están, así el ajuste será el adecuado.
 
-```{r}
+```{r voom}
 ## library("limma")
 vGene <- voom(dge, mod, plot = TRUE)
 ```
 
 Ajuste de datos y evaluación respecto a la categoría `figo_stage` (`coef = 4`).
 
-```{r}
+```{r adjust_data}
 ## Ajuste de datos
 eb_results <- eBayes(lmFit(vGene))
 
@@ -381,7 +394,7 @@ En la siguiente **gráfica MA** no vemos diferencias significativas de expresió
 
 Además de que no hay una formación de conos fuerte, probablemente esto se deba a la limpieza de genes con bajos niveles de expresión.
 
-```{r}
+```{r visual_}
 ## Visualicemos los resultados estadísticos
 plotMA(eb_results, coef = 4, main = "FIGO Stage II")
 ```
@@ -441,3 +454,5 @@ En cuestiones de código, las bibliotecas de análisis de expresión diferencial
 
 Este fue el primer acercamiento que tuve a manejo de datos de expresión diferencial, estoy segura de que queda mucho por pulir y aprender, sin embargo estoy muy contenta con el resultado de este proyecto y las habilidades que me permitió desarrollar. Seguiré estudiando y trabajando en el tema, las aplicaciones son impresionantes y me gustaría seguir aprendiendo de lo mucho que pueda lograr a partir de la manipulación de datos de expresión.
 
+
+*This book was last updated at `r Sys.time()`.*
