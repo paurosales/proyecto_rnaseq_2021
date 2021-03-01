@@ -135,11 +135,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Generalidades</a>
 <ul>
-<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#ligas-externas"><i class="fa fa-check"></i><b>0.1</b> Ligas externas</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#proyecto-datos-de-srp11148"><i class="fa fa-check"></i>Proyecto: Datos de SRP11148</a>
 <ul>
 <li><a href="index.html#abstract"><em>Abstract</em></a></li>
 </ul></li>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#pipeline"><i class="fa fa-check"></i><b>0.1</b> <em>Pipeline</em></a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="libs.html"><a href="libs.html"><i class="fa fa-check"></i><b>1</b> Librerías utilizadas</a></li>
 <li class="chapter" data-level="2" data-path="importacion.html"><a href="importacion.html"><i class="fa fa-check"></i><b>2</b> Importación de datos</a></li>
@@ -160,6 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="visualizacion.html"><a href="visualizacion.html"><i class="fa fa-check"></i><b>6</b> Visualización</a></li>
 <li class="chapter" data-level="7" data-path="modelaje.html"><a href="modelaje.html"><i class="fa fa-check"></i><b>7</b> Modelaje</a></li>
 <li class="chapter" data-level="8" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>8</b> Conclusiones</a></li>
+<li class="chapter" data-level="9" data-path="referencias-de-los-paquetes-utilizados.html"><a href="referencias-de-los-paquetes-utilizados.html"><i class="fa fa-check"></i><b>9</b> Referencias de los paquetes utilizados</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -210,19 +211,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-5"><a href="limpieza.html#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">&quot;^sra_attribute&quot;</span>, <span class="fu">colnames</span>(<span class="fu">colData</span>(rse_gene_SRP111481)))</span>
 <span id="cb8-6"><a href="limpieza.html#cb8-6" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div>
 <pre><code>## DataFrame with 96 rows and 4 columns
-##            sra_attribute.age sra_attribute.figo_stage sra_attribute.source_name   sra_attribute.tissue
-##                  &lt;character&gt;              &lt;character&gt;               &lt;character&gt;            &lt;character&gt;
-## SRR5815895                39                       II    Primary invasive ova.. early-stage primary ..
-## SRR5815896                58                        I    Primary invasive ova.. early-stage primary ..
-## SRR5815897                64                        I    Primary invasive ova.. early-stage primary ..
-## SRR5815898                67                        I    Primary invasive ova.. early-stage primary ..
-## SRR5815899                61                       II    Primary invasive ova.. early-stage primary ..
-## ...                      ...                      ...                       ...                    ...
-## SRR5815937                55                        I    Primary invasive ova.. early-stage primary ..
-## SRR5815939                49                        I    Primary invasive ova.. early-stage primary ..
-## SRR5815940                75                        I    Primary invasive ova.. early-stage primary ..
-## SRR5815947                80                        I    Primary invasive ova.. early-stage primary ..
-## SRR5815948                25                        I    Primary invasive ova.. early-stage primary ..</code></pre>
+##            sra_attribute.age sra_attribute.figo_stage sra_attribute.source_name
+##                  &lt;character&gt;              &lt;character&gt;               &lt;character&gt;
+## SRR5815895                39                       II    Primary invasive ova..
+## SRR5815896                58                        I    Primary invasive ova..
+## SRR5815897                64                        I    Primary invasive ova..
+## SRR5815898                67                        I    Primary invasive ova..
+## SRR5815899                61                       II    Primary invasive ova..
+## ...                      ...                      ...                       ...
+## SRR5815937                55                        I    Primary invasive ova..
+## SRR5815939                49                        I    Primary invasive ova..
+## SRR5815940                75                        I    Primary invasive ova..
+## SRR5815947                80                        I    Primary invasive ova..
+## SRR5815948                25                        I    Primary invasive ova..
+##              sra_attribute.tissue
+##                       &lt;character&gt;
+## SRR5815895 early-stage primary ..
+## SRR5815896 early-stage primary ..
+## SRR5815897 early-stage primary ..
+## SRR5815898 early-stage primary ..
+## SRR5815899 early-stage primary ..
+## ...                           ...
+## SRR5815937 early-stage primary ..
+## SRR5815939 early-stage primary ..
+## SRR5815940 early-stage primary ..
+## SRR5815947 early-stage primary ..
+## SRR5815948 early-stage primary ..</code></pre>
 <div id="formateo" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Formateo</h2>
 <p>Modificar los datos tipo caracter que requieran cambio.</p>
@@ -241,13 +255,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-7"><a href="limpieza.html#cb12-7" aria-hidden="true" tabindex="-1"></a>    ,</span>
 <span id="cb12-8"><a href="limpieza.html#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">&quot;^sra_attribute.[age|figo_stage|source_name|tissue]&quot;</span>, <span class="fu">colnames</span>(<span class="fu">colData</span>(rse_gene_SRP111481)))</span>
 <span id="cb12-9"><a href="limpieza.html#cb12-9" aria-hidden="true" tabindex="-1"></a>]))</span></code></pre></div>
-<pre><code>##  sra_attribute.age sra_attribute.figo_stage sra_attribute.source_name sra_attribute.tissue
-##  Min.   :25.00     I :64                    Length:96                 Length:96           
-##  1st Qu.:52.00     II:32                    Class :character          Class :character    
-##  Median :63.00                              Mode  :character          Mode  :character    
-##  Mean   :63.15                                                                            
-##  3rd Qu.:74.25                                                                            
-##  Max.   :86.00</code></pre>
+<pre><code>##  sra_attribute.age sra_attribute.figo_stage sra_attribute.source_name
+##  Min.   :25.00     I :64                    Length:96                
+##  1st Qu.:52.00     II:32                    Class :character         
+##  Median :63.00                              Mode  :character         
+##  Mean   :63.15                                                       
+##  3rd Qu.:74.25                                                       
+##  Max.   :86.00                                                       
+##  sra_attribute.tissue
+##  Length:96           
+##  Class :character    
+##  Mode  :character    
+##                      
+##                      
+## </code></pre>
 </div>
 </div>
             </section>
