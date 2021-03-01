@@ -491,3 +491,6 @@ Este fue el primer acercamiento que tuve a manejo de datos de expresión diferen
   
 -  H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
   Springer-Verlag New York, 2016.
+
+<!--chapter:end:index.Rmd-->
+
